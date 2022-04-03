@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>NODE指标 | 古寒飞</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <meta name="description" content="meta中的文字描述，用于SEO">
+    
+    <link rel="preload" href="/assets/css/0.styles.a17ef63e.css" as="style"><link rel="preload" href="/assets/js/app.fd839b10.js" as="script"><link rel="preload" href="/assets/js/2.2b9e394d.js" as="script"><link rel="preload" href="/assets/js/26.9dc5536c.js" as="script"><link rel="prefetch" href="/assets/js/10.fc7f5120.js"><link rel="prefetch" href="/assets/js/11.f966ca3e.js"><link rel="prefetch" href="/assets/js/12.90e838cb.js"><link rel="prefetch" href="/assets/js/13.6ae89312.js"><link rel="prefetch" href="/assets/js/14.c58c6dd4.js"><link rel="prefetch" href="/assets/js/15.dbe3a329.js"><link rel="prefetch" href="/assets/js/16.0ebac1ec.js"><link rel="prefetch" href="/assets/js/17.ff4a660a.js"><link rel="prefetch" href="/assets/js/18.c17eddf4.js"><link rel="prefetch" href="/assets/js/19.c20452c9.js"><link rel="prefetch" href="/assets/js/20.96d4df4e.js"><link rel="prefetch" href="/assets/js/21.62b7f2a6.js"><link rel="prefetch" href="/assets/js/22.58603927.js"><link rel="prefetch" href="/assets/js/23.b1a61b34.js"><link rel="prefetch" href="/assets/js/24.baa79893.js"><link rel="prefetch" href="/assets/js/25.ab19d84e.js"><link rel="prefetch" href="/assets/js/27.33b48cc0.js"><link rel="prefetch" href="/assets/js/28.3e367597.js"><link rel="prefetch" href="/assets/js/29.86454070.js"><link rel="prefetch" href="/assets/js/3.5d21b6bd.js"><link rel="prefetch" href="/assets/js/30.2d509b25.js"><link rel="prefetch" href="/assets/js/31.d279d3e7.js"><link rel="prefetch" href="/assets/js/32.6ef0b503.js"><link rel="prefetch" href="/assets/js/4.d8544a7c.js"><link rel="prefetch" href="/assets/js/5.3337d71b.js"><link rel="prefetch" href="/assets/js/6.661b1545.js"><link rel="prefetch" href="/assets/js/7.150e0099.js"><link rel="prefetch" href="/assets/js/8.6d301a46.js"><link rel="prefetch" href="/assets/js/9.2edb421e.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.a17ef63e.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.svg" alt="古寒飞" class="logo"> <span class="site-name can-hide">古寒飞</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/pages/opensource/pushgateway_client.html" class="nav-link">
+  我的开源
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="我的文章" class="dropdown-title"><span class="title">笔记</span> <span class="arrow down"></span></button> <button type="button" aria-label="我的文章" class="mobile-dropdown-title"><span class="title">笔记</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/pages/kubernetes/安装部署.html" class="nav-link">
+  Kubernetes
+</a></li><li class="dropdown-item"><!----> <a href="/pages/prometheus/target_icmp.html" class="nav-link">
+  Prometheus
+</a></li><li class="dropdown-item"><!----> <a href="/pages/theory/node_load.html" class="nav-link">
+  原理探索
+</a></li><li class="dropdown-item"><!----> <a href="/pages/install/openvpn.html" class="nav-link">
+  安装部署
+</a></li><li class="dropdown-item"><!----> <a href="/pages/taycc/pypi.html" class="nav-link">
+  杂七杂八
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术规范" class="dropdown-title"><span class="title">技术规范</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术规范" class="mobile-dropdown-title"><span class="title">技术规范</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/containernetworking/cni/blob/spec-v0.4.0/SPEC.md" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CNI-0.4.0
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="官方文档" class="dropdown-title"><span class="title">官方文献</span> <span class="arrow down"></span></button> <button type="button" aria-label="官方文档" class="mobile-dropdown-title"><span class="title">官方文献</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://www.consul.io/docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Consul
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://prometheus.io/docs/prometheus/latest/getting_started/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Prometheus
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://prometheus.io/docs/practices/pushing/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Pushgateway
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://prometheus.io/docs/alerting/latest/alertmanager/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Alertmanager
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://vuepress.vuejs.org/zh/guide/markdown.html#自定义容器" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  VuePress
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><h4>
+          Kubernetes
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://kubernetes.io/zh/docs/home/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  中文文档
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/pages/opensource/pushgateway_client.html" class="nav-link">
+  我的开源
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="我的文章" class="dropdown-title"><span class="title">笔记</span> <span class="arrow down"></span></button> <button type="button" aria-label="我的文章" class="mobile-dropdown-title"><span class="title">笔记</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/pages/kubernetes/安装部署.html" class="nav-link">
+  Kubernetes
+</a></li><li class="dropdown-item"><!----> <a href="/pages/prometheus/target_icmp.html" class="nav-link">
+  Prometheus
+</a></li><li class="dropdown-item"><!----> <a href="/pages/theory/node_load.html" class="nav-link">
+  原理探索
+</a></li><li class="dropdown-item"><!----> <a href="/pages/install/openvpn.html" class="nav-link">
+  安装部署
+</a></li><li class="dropdown-item"><!----> <a href="/pages/taycc/pypi.html" class="nav-link">
+  杂七杂八
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术规范" class="dropdown-title"><span class="title">技术规范</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术规范" class="mobile-dropdown-title"><span class="title">技术规范</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/containernetworking/cni/blob/spec-v0.4.0/SPEC.md" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CNI-0.4.0
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="官方文档" class="dropdown-title"><span class="title">官方文献</span> <span class="arrow down"></span></button> <button type="button" aria-label="官方文档" class="mobile-dropdown-title"><span class="title">官方文献</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://www.consul.io/docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Consul
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://prometheus.io/docs/prometheus/latest/getting_started/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Prometheus
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://prometheus.io/docs/practices/pushing/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Pushgateway
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://prometheus.io/docs/alerting/latest/alertmanager/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Alertmanager
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://vuepress.vuejs.org/zh/guide/markdown.html#自定义容器" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  VuePress
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><h4>
+          Kubernetes
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://kubernetes.io/zh/docs/home/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  中文文档
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>指标</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/pages/prometheus/target_map.html" class="sidebar-link">Google黄金指标</a></li><li><a href="/pages/prometheus/target_map_my_1.html" class="sidebar-link">随手记</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>node_exporter</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/pages/prometheus/target_node.html" aria-current="page" class="active sidebar-link">node指标</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>blackbox_exporter</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/pages/prometheus/target_icmp.html" class="sidebar-link">ICMP指标</a></li><li><a href="/pages/prometheus/target_http.html" class="sidebar-link">HTTP指标</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="node指标"><a href="#node指标" class="header-anchor">#</a> NODE指标</h1> <blockquote><p>作者平时也得工作和干活~，尽量在有空的时候不断的去翻译和收集新指标...</p> <p>如果有相关问题或反馈，可以加作者微信（微信号：SPE3SRU3STAY）</p></blockquote> <h5 id="版本-node-exporter-1-1-2-linux-amd64"><a href="#版本-node-exporter-1-1-2-linux-amd64" class="header-anchor">#</a> （版本：node_exporter-1.1.2.linux-amd64）</h5> <hr> <ul><li>HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.</li> <li>TYPE go_gc_duration_seconds summary</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_gc_duration_seconds{quantile=&quot;0&quot;} 2.9648e-05
+go_gc_duration_seconds{quantile=&quot;0.25&quot;} 4.2569e-05
+go_gc_duration_seconds{quantile=&quot;0.5&quot;} 8.1872e-05
+go_gc_duration_seconds{quantile=&quot;0.75&quot;} 9.9072e-05
+go_gc_duration_seconds{quantile=&quot;1&quot;} 0.00040953
+go_gc_duration_seconds_sum 28.663422559
+go_gc_duration_seconds_count 387215
+</code></pre></div><ul><li>HELP go_goroutines Number of goroutines that currently exist.</li> <li>TYPE go_goroutines gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_goroutines 9
+</code></pre></div><ul><li>HELP go_info Information about the Go environment.</li> <li>TYPE go_info gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_info{version=&quot;go1.15.8&quot;} 1
+</code></pre></div><ul><li>HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.</li> <li>TYPE go_memstats_alloc_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_alloc_bytes 2.63272e+06
+</code></pre></div><ul><li>HELP go_memstats_alloc_bytes_total Total number of bytes allocated, even if freed.</li> <li>TYPE go_memstats_alloc_bytes_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_alloc_bytes_total 7.3096163368e+11
+</code></pre></div><ul><li>HELP go_memstats_buck_hash_sys_bytes Number of bytes used by the profiling bucket hash table.</li> <li>TYPE go_memstats_buck_hash_sys_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_buck_hash_sys_bytes 1.986683e+06
+</code></pre></div><ul><li>HELP go_memstats_frees_total Total number of frees.</li> <li>TYPE go_memstats_frees_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_frees_total 5.411446854e+09
+</code></pre></div><ul><li>HELP go_memstats_gc_cpu_fraction The fraction of this program's available CPU time used by the GC since the program started.</li> <li>TYPE go_memstats_gc_cpu_fraction gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_gc_cpu_fraction 5.8985288937517594e-05
+</code></pre></div><ul><li>HELP go_memstats_gc_sys_bytes Number of bytes used for garbage collection system metadata.</li> <li>TYPE go_memstats_gc_sys_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_gc_sys_bytes 5.25636e+06
+</code></pre></div><ul><li>HELP go_memstats_heap_alloc_bytes Number of heap bytes allocated and still in use.</li> <li>TYPE go_memstats_heap_alloc_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_heap_alloc_bytes 2.63272e+06
+</code></pre></div><ul><li>HELP go_memstats_heap_idle_bytes Number of heap bytes waiting to be used.</li> <li>TYPE go_memstats_heap_idle_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_heap_idle_bytes 6.193152e+07
+</code></pre></div><ul><li>HELP go_memstats_heap_inuse_bytes Number of heap bytes that are in use.</li> <li>TYPE go_memstats_heap_inuse_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_heap_inuse_bytes 4.456448e+06
+</code></pre></div><ul><li>HELP go_memstats_heap_objects Number of allocated objects.</li> <li>TYPE go_memstats_heap_objects gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_heap_objects 13667
+</code></pre></div><ul><li>HELP go_memstats_heap_released_bytes Number of heap bytes released to OS.</li> <li>TYPE go_memstats_heap_released_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_heap_released_bytes 6.0637184e+07
+</code></pre></div><ul><li>HELP go_memstats_heap_sys_bytes Number of heap bytes obtained from system.</li> <li>TYPE go_memstats_heap_sys_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_heap_sys_bytes 6.6387968e+07
+</code></pre></div><ul><li>HELP go_memstats_last_gc_time_seconds Number of seconds since 1970 of last garbage collection.</li> <li>TYPE go_memstats_last_gc_time_seconds gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_last_gc_time_seconds 1.6275324084192567e+09
+</code></pre></div><ul><li>HELP go_memstats_lookups_total Total number of pointer lookups.</li> <li>TYPE go_memstats_lookups_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_lookups_total 0
+</code></pre></div><ul><li>HELP go_memstats_mallocs_total Total number of mallocs.</li> <li>TYPE go_memstats_mallocs_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_mallocs_total 5.411460521e+09
+</code></pre></div><ul><li>HELP go_memstats_mcache_inuse_bytes Number of bytes in use by mcache structures.</li> <li>TYPE go_memstats_mcache_inuse_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_mcache_inuse_bytes 6944
+</code></pre></div><ul><li>HELP go_memstats_mcache_sys_bytes Number of bytes used for mcache structures obtained from system.</li> <li>TYPE go_memstats_mcache_sys_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_mcache_sys_bytes 16384
+</code></pre></div><ul><li>HELP go_memstats_mspan_inuse_bytes Number of bytes in use by mspan structures.</li> <li>TYPE go_memstats_mspan_inuse_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_mspan_inuse_bytes 98736
+</code></pre></div><ul><li>HELP go_memstats_mspan_sys_bytes Number of bytes used for mspan structures obtained from system.</li> <li>TYPE go_memstats_mspan_sys_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_mspan_sys_bytes 131072
+</code></pre></div><ul><li>HELP go_memstats_next_gc_bytes Number of heap bytes when next garbage collection will take place.</li> <li>TYPE go_memstats_next_gc_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_next_gc_bytes 4.816288e+06
+</code></pre></div><ul><li>HELP go_memstats_other_sys_bytes Number of bytes used for other system allocations.</li> <li>TYPE go_memstats_other_sys_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_other_sys_bytes 884445
+</code></pre></div><ul><li>HELP go_memstats_stack_inuse_bytes Number of bytes in use by the stack allocator.</li> <li>TYPE go_memstats_stack_inuse_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_stack_inuse_bytes 720896
+</code></pre></div><ul><li>HELP go_memstats_stack_sys_bytes Number of bytes obtained from system for stack allocator.</li> <li>TYPE go_memstats_stack_sys_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_stack_sys_bytes 720896
+</code></pre></div><ul><li>HELP go_memstats_sys_bytes Number of bytes obtained from system.</li> <li>TYPE go_memstats_sys_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_memstats_sys_bytes 7.5383808e+07
+</code></pre></div><ul><li>HELP go_threads Number of OS threads created.</li> <li>TYPE go_threads gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>go_threads 9
+</code></pre></div><ul><li>HELP node_arp_entries ARP entries by device</li> <li>TYPE node_arp_entries gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_arp_entries{device=&quot;eth0&quot;} 18
+</code></pre></div><ul><li>HELP node_boot_time_seconds Node boot time, in unixtime.</li> <li>TYPE node_boot_time_seconds gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_boot_time_seconds 1.624960308e+09
+</code></pre></div><ul><li>HELP node_context_switches_total Total number of context switches.</li> <li>TYPE node_context_switches_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_context_switches_total 3.696138e+09
+</code></pre></div><ul><li>HELP node_cooling_device_cur_state Current throttle state of the cooling device</li> <li>TYPE node_cooling_device_cur_state gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_cooling_device_cur_state{name=&quot;0&quot;,type=&quot;Processor&quot;} 0
+node_cooling_device_cur_state{name=&quot;1&quot;,type=&quot;Processor&quot;} 0
+node_cooling_device_cur_state{name=&quot;2&quot;,type=&quot;Processor&quot;} 0
+node_cooling_device_cur_state{name=&quot;3&quot;,type=&quot;Processor&quot;} 0
+</code></pre></div><ul><li>HELP node_cooling_device_max_state Maximum throttle state of the cooling device</li> <li>TYPE node_cooling_device_max_state gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_cooling_device_max_state{name=&quot;0&quot;,type=&quot;Processor&quot;} 0
+node_cooling_device_max_state{name=&quot;1&quot;,type=&quot;Processor&quot;} 0
+node_cooling_device_max_state{name=&quot;2&quot;,type=&quot;Processor&quot;} 0
+node_cooling_device_max_state{name=&quot;3&quot;,type=&quot;Processor&quot;} 0
+</code></pre></div><ul><li>HELP node_cpu_guest_seconds_total Seconds the CPUs spent in guests (VMs) for each mode.</li> <li>TYPE node_cpu_guest_seconds_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_cpu_guest_seconds_total{cpu=&quot;0&quot;,mode=&quot;nice&quot;} 0
+node_cpu_guest_seconds_total{cpu=&quot;0&quot;,mode=&quot;user&quot;} 0
+node_cpu_guest_seconds_total{cpu=&quot;1&quot;,mode=&quot;nice&quot;} 0
+node_cpu_guest_seconds_total{cpu=&quot;1&quot;,mode=&quot;user&quot;} 0
+node_cpu_guest_seconds_total{cpu=&quot;2&quot;,mode=&quot;nice&quot;} 0
+node_cpu_guest_seconds_total{cpu=&quot;2&quot;,mode=&quot;user&quot;} 0
+node_cpu_guest_seconds_total{cpu=&quot;3&quot;,mode=&quot;nice&quot;} 0
+node_cpu_guest_seconds_total{cpu=&quot;3&quot;,mode=&quot;user&quot;} 0
+</code></pre></div><ul><li>HELP node_cpu_seconds_total Seconds the CPUs spent in each mode.</li> <li>TYPE node_cpu_seconds_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_cpu_seconds_total{cpu=&quot;0&quot;,mode=&quot;idle&quot;} 2.55859848e+06
+node_cpu_seconds_total{cpu=&quot;0&quot;,mode=&quot;iowait&quot;} 301.08
+node_cpu_seconds_total{cpu=&quot;0&quot;,mode=&quot;irq&quot;} 0
+node_cpu_seconds_total{cpu=&quot;0&quot;,mode=&quot;nice&quot;} 0.64
+node_cpu_seconds_total{cpu=&quot;0&quot;,mode=&quot;softirq&quot;} 104.04
+node_cpu_seconds_total{cpu=&quot;0&quot;,mode=&quot;steal&quot;} 0
+node_cpu_seconds_total{cpu=&quot;0&quot;,mode=&quot;system&quot;} 5418.05
+node_cpu_seconds_total{cpu=&quot;0&quot;,mode=&quot;user&quot;} 5837.67
+node_cpu_seconds_total{cpu=&quot;1&quot;,mode=&quot;idle&quot;} 2.55877764e+06
+node_cpu_seconds_total{cpu=&quot;1&quot;,mode=&quot;iowait&quot;} 219.12
+node_cpu_seconds_total{cpu=&quot;1&quot;,mode=&quot;irq&quot;} 0
+node_cpu_seconds_total{cpu=&quot;1&quot;,mode=&quot;nice&quot;} 0.87
+node_cpu_seconds_total{cpu=&quot;1&quot;,mode=&quot;softirq&quot;} 82.08
+node_cpu_seconds_total{cpu=&quot;1&quot;,mode=&quot;steal&quot;} 0
+node_cpu_seconds_total{cpu=&quot;1&quot;,mode=&quot;system&quot;} 5396.1
+node_cpu_seconds_total{cpu=&quot;1&quot;,mode=&quot;user&quot;} 5843.58
+node_cpu_seconds_total{cpu=&quot;2&quot;,mode=&quot;idle&quot;} 2.55941052e+06
+node_cpu_seconds_total{cpu=&quot;2&quot;,mode=&quot;iowait&quot;} 41.06
+node_cpu_seconds_total{cpu=&quot;2&quot;,mode=&quot;irq&quot;} 0
+node_cpu_seconds_total{cpu=&quot;2&quot;,mode=&quot;nice&quot;} 0.45
+node_cpu_seconds_total{cpu=&quot;2&quot;,mode=&quot;softirq&quot;} 48.31
+node_cpu_seconds_total{cpu=&quot;2&quot;,mode=&quot;steal&quot;} 0
+node_cpu_seconds_total{cpu=&quot;2&quot;,mode=&quot;system&quot;} 5335.76
+node_cpu_seconds_total{cpu=&quot;2&quot;,mode=&quot;user&quot;} 5718.07
+node_cpu_seconds_total{cpu=&quot;3&quot;,mode=&quot;idle&quot;} 2.55950228e+06
+node_cpu_seconds_total{cpu=&quot;3&quot;,mode=&quot;iowait&quot;} 25.67
+node_cpu_seconds_total{cpu=&quot;3&quot;,mode=&quot;irq&quot;} 0
+node_cpu_seconds_total{cpu=&quot;3&quot;,mode=&quot;nice&quot;} 0.42
+node_cpu_seconds_total{cpu=&quot;3&quot;,mode=&quot;softirq&quot;} 47.79
+node_cpu_seconds_total{cpu=&quot;3&quot;,mode=&quot;steal&quot;} 0
+node_cpu_seconds_total{cpu=&quot;3&quot;,mode=&quot;system&quot;} 5311.91
+node_cpu_seconds_total{cpu=&quot;3&quot;,mode=&quot;user&quot;} 5639.38
+</code></pre></div><ul><li>HELP node_disk_io_now The number of I/Os currently in progress.</li> <li>TYPE node_disk_io_now gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_disk_io_now{device=&quot;sr0&quot;} 0
+node_disk_io_now{device=&quot;vda&quot;} 0
+</code></pre></div><ul><li>HELP node_disk_io_time_seconds_total Total seconds spent doing I/Os.</li> <li>TYPE node_disk_io_time_seconds_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_disk_io_time_seconds_total{device=&quot;sr0&quot;} 0.067
+node_disk_io_time_seconds_total{device=&quot;vda&quot;} 629.177
+</code></pre></div><ul><li>HELP node_disk_io_time_weighted_seconds_total The weighted - of seconds spent doing I/Os.</li> <li>TYPE node_disk_io_time_weighted_seconds_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_disk_io_time_weighted_seconds_total{device=&quot;sr0&quot;} 0.101
+node_disk_io_time_weighted_seconds_total{device=&quot;vda&quot;} 4989.313
+</code></pre></div><ul><li>HELP node_disk_read_bytes_total The total number of bytes read successfully.</li> <li>TYPE node_disk_read_bytes_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_disk_read_bytes_total{device=&quot;sr0&quot;} 6.754304e+06
+node_disk_read_bytes_total{device=&quot;vda&quot;} 6.65115136e+08
+</code></pre></div><ul><li>HELP node_disk_read_time_seconds_total The total number of seconds spent by all reads.</li> <li>TYPE node_disk_read_time_seconds_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_disk_read_time_seconds_total{device=&quot;sr0&quot;} 0.101
+node_disk_read_time_seconds_total{device=&quot;vda&quot;} 15.929
+</code></pre></div><ul><li>HELP node_disk_reads_completed_total The total number of reads completed successfully.</li> <li>TYPE node_disk_reads_completed_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_disk_reads_completed_total{device=&quot;sr0&quot;} 146
+node_disk_reads_completed_total{device=&quot;vda&quot;} 22074
+</code></pre></div><ul><li>HELP node_disk_reads_merged_total The total number of reads merged.</li> <li>TYPE node_disk_reads_merged_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_disk_reads_merged_total{device=&quot;sr0&quot;} 3
+node_disk_reads_merged_total{device=&quot;vda&quot;} 134
+</code></pre></div><ul><li>HELP node_disk_write_time_seconds_total This is the total number of seconds spent by all writes.</li> <li>TYPE node_disk_write_time_seconds_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_disk_write_time_seconds_total{device=&quot;sr0&quot;} 0
+node_disk_write_time_seconds_total{device=&quot;vda&quot;} 5451.1320000000005
+</code></pre></div><ul><li>HELP node_disk_writes_completed_total The total number of writes completed successfully.</li> <li>TYPE node_disk_writes_completed_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_disk_writes_completed_total{device=&quot;sr0&quot;} 0
+node_disk_writes_completed_total{device=&quot;vda&quot;} 6.628545e+06
+</code></pre></div><ul><li>HELP node_disk_writes_merged_total The number of writes merged.</li> <li>TYPE node_disk_writes_merged_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_disk_writes_merged_total{device=&quot;sr0&quot;} 0
+node_disk_writes_merged_total{device=&quot;vda&quot;} 5.773772e+06
+</code></pre></div><ul><li>HELP node_disk_written_bytes_total The total number of bytes written successfully.</li> <li>TYPE node_disk_written_bytes_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_disk_written_bytes_total{device=&quot;sr0&quot;} 0
+node_disk_written_bytes_total{device=&quot;vda&quot;} 6.2284825088e+10
+</code></pre></div><ul><li>HELP node_entropy_available_bits Bits of available entropy.</li> <li>TYPE node_entropy_available_bits gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_entropy_available_bits 2527
+</code></pre></div><ul><li>HELP node_entropy_pool_size_bits Bits of entropy pool.</li> <li>TYPE node_entropy_pool_size_bits gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_entropy_pool_size_bits 4096
+</code></pre></div><ul><li>HELP node_exporter_build_info A metric with a constant '1' value labeled by version, revision, branch, and goversion from which node_exporter was built.</li> <li>TYPE node_exporter_build_info gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_exporter_build_info{branch=&quot;HEAD&quot;,goversion=&quot;go1.15.8&quot;,revision=&quot;b597c1244d7bef49e6f3359c87a56dd7707f6719&quot;,version=&quot;1.1.2&quot;} 1
+</code></pre></div><ul><li>HELP node_filefd_allocated File descriptor statistics: allocated.</li> <li>TYPE node_filefd_allocated gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_filefd_allocated 1024
+</code></pre></div><ul><li>HELP node_filefd_maximum File descriptor statistics: maximum.</li> <li>TYPE node_filefd_maximum gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_filefd_maximum 999999
+</code></pre></div><ul><li>HELP node_filesystem_avail_bytes Filesystem space available to non-root users in bytes.</li> <li>TYPE node_filesystem_avail_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_filesystem_avail_bytes{device=&quot;/dev/vda1&quot;,fstype=&quot;ext4&quot;,mountpoint=&quot;/&quot;} 7.6538097664e+10
+node_filesystem_avail_bytes{device=&quot;cosfs&quot;,fstype=&quot;fuse.cosfs&quot;,mountpoint=&quot;/data/cos-static&quot;} 2.81474976710656e+14
+node_filesystem_avail_bytes{device=&quot;rootfs&quot;,fstype=&quot;rootfs&quot;,mountpoint=&quot;/&quot;} 7.6538097664e+10
+node_filesystem_avail_bytes{device=&quot;tmpfs&quot;,fstype=&quot;tmpfs&quot;,mountpoint=&quot;/run&quot;} 4.099936256e+09
+node_filesystem_avail_bytes{device=&quot;tmpfs&quot;,fstype=&quot;tmpfs&quot;,mountpoint=&quot;/run/user/0&quot;} 8.20092928e+08
+</code></pre></div><ul><li>HELP node_filesystem_device_error Whether an error occurred while getting statistics for the given device.</li> <li>TYPE node_filesystem_device_error gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_filesystem_device_error{device=&quot;/dev/vda1&quot;,fstype=&quot;ext4&quot;,mountpoint=&quot;/&quot;} 0
+node_filesystem_device_error{device=&quot;cosfs&quot;,fstype=&quot;fuse.cosfs&quot;,mountpoint=&quot;/data/cos-static&quot;} 0
+node_filesystem_device_error{device=&quot;rootfs&quot;,fstype=&quot;rootfs&quot;,mountpoint=&quot;/&quot;} 0
+node_filesystem_device_error{device=&quot;tmpfs&quot;,fstype=&quot;tmpfs&quot;,mountpoint=&quot;/run&quot;} 0
+node_filesystem_device_error{device=&quot;tmpfs&quot;,fstype=&quot;tmpfs&quot;,mountpoint=&quot;/run/user/0&quot;} 0
+</code></pre></div><ul><li>HELP node_filesystem_files Filesystem total file nodes.</li> <li>TYPE node_filesystem_files gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_filesystem_files{device=&quot;/dev/vda1&quot;,fstype=&quot;ext4&quot;,mountpoint=&quot;/&quot;} 5.24288e+06
+node_filesystem_files{device=&quot;cosfs&quot;,fstype=&quot;fuse.cosfs&quot;,mountpoint=&quot;/data/cos-static&quot;} 0
+node_filesystem_files{device=&quot;rootfs&quot;,fstype=&quot;rootfs&quot;,mountpoint=&quot;/&quot;} 5.24288e+06
+node_filesystem_files{device=&quot;tmpfs&quot;,fstype=&quot;tmpfs&quot;,mountpoint=&quot;/run&quot;} 1.001087e+06
+node_filesystem_files{device=&quot;tmpfs&quot;,fstype=&quot;tmpfs&quot;,mountpoint=&quot;/run/user/0&quot;} 1.001087e+06
+</code></pre></div><ul><li>HELP node_filesystem_files_free Filesystem total free file nodes.</li> <li>TYPE node_filesystem_files_free gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_filesystem_files_free{device=&quot;/dev/vda1&quot;,fstype=&quot;ext4&quot;,mountpoint=&quot;/&quot;} 5.157192e+06
+node_filesystem_files_free{device=&quot;cosfs&quot;,fstype=&quot;fuse.cosfs&quot;,mountpoint=&quot;/data/cos-static&quot;} 0
+node_filesystem_files_free{device=&quot;rootfs&quot;,fstype=&quot;rootfs&quot;,mountpoint=&quot;/&quot;} 5.157192e+06
+node_filesystem_files_free{device=&quot;tmpfs&quot;,fstype=&quot;tmpfs&quot;,mountpoint=&quot;/run&quot;} 1.000652e+06
+node_filesystem_files_free{device=&quot;tmpfs&quot;,fstype=&quot;tmpfs&quot;,mountpoint=&quot;/run/user/0&quot;} 1.001086e+06
+</code></pre></div><ul><li>HELP node_filesystem_free_bytes Filesystem free space in bytes.</li> <li>TYPE node_filesystem_free_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_filesystem_free_bytes{device=&quot;/dev/vda1&quot;,fstype=&quot;ext4&quot;,mountpoint=&quot;/&quot;} 8.007653376e+10
+node_filesystem_free_bytes{device=&quot;cosfs&quot;,fstype=&quot;fuse.cosfs&quot;,mountpoint=&quot;/data/cos-static&quot;} 2.81474976710656e+14
+node_filesystem_free_bytes{device=&quot;rootfs&quot;,fstype=&quot;rootfs&quot;,mountpoint=&quot;/&quot;} 8.007653376e+10
+node_filesystem_free_bytes{device=&quot;tmpfs&quot;,fstype=&quot;tmpfs&quot;,mountpoint=&quot;/run&quot;} 4.099936256e+09
+node_filesystem_free_bytes{device=&quot;tmpfs&quot;,fstype=&quot;tmpfs&quot;,mountpoint=&quot;/run/user/0&quot;} 8.20092928e+08
+</code></pre></div><ul><li>HELP node_filesystem_readonly Filesystem read-only status.</li> <li>TYPE node_filesystem_readonly gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_filesystem_readonly{device=&quot;/dev/vda1&quot;,fstype=&quot;ext4&quot;,mountpoint=&quot;/&quot;} 0
+node_filesystem_readonly{device=&quot;cosfs&quot;,fstype=&quot;fuse.cosfs&quot;,mountpoint=&quot;/data/cos-static&quot;} 0
+node_filesystem_readonly{device=&quot;rootfs&quot;,fstype=&quot;rootfs&quot;,mountpoint=&quot;/&quot;} 0
+node_filesystem_readonly{device=&quot;tmpfs&quot;,fstype=&quot;tmpfs&quot;,mountpoint=&quot;/run&quot;} 0
+node_filesystem_readonly{device=&quot;tmpfs&quot;,fstype=&quot;tmpfs&quot;,mountpoint=&quot;/run/user/0&quot;} 0
+</code></pre></div><ul><li>HELP node_filesystem_size_bytes Filesystem size in bytes.</li> <li>TYPE node_filesystem_size_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_filesystem_size_bytes{device=&quot;/dev/vda1&quot;,fstype=&quot;ext4&quot;,mountpoint=&quot;/&quot;} 8.4416008192e+10
+node_filesystem_size_bytes{device=&quot;cosfs&quot;,fstype=&quot;fuse.cosfs&quot;,mountpoint=&quot;/data/cos-static&quot;} 2.81474976710656e+14
+node_filesystem_size_bytes{device=&quot;rootfs&quot;,fstype=&quot;rootfs&quot;,mountpoint=&quot;/&quot;} 8.4416008192e+10
+node_filesystem_size_bytes{device=&quot;tmpfs&quot;,fstype=&quot;tmpfs&quot;,mountpoint=&quot;/run&quot;} 4.100452352e+09
+node_filesystem_size_bytes{device=&quot;tmpfs&quot;,fstype=&quot;tmpfs&quot;,mountpoint=&quot;/run/user/0&quot;} 8.20092928e+08
+</code></pre></div><ul><li>HELP node_forks_total Total number of forks.</li> <li>TYPE node_forks_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_forks_total 6.62285e+06
+</code></pre></div><ul><li>HELP node_intr_total Total number of interrupts serviced.</li> <li>TYPE node_intr_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_intr_total 2.347710755e+09
+</code></pre></div><ul><li>HELP node_load1 1m load average.</li> <li>TYPE node_load1 gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_load1 0
+</code></pre></div><ul><li>HELP node_load15 15m load average.</li> <li>TYPE node_load15 gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_load15 0.05
+</code></pre></div><ul><li>HELP node_load5 5m load average.</li> <li>TYPE node_load5 gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_load5 0.01
+</code></pre></div><ul><li>HELP node_memory_Active_anon_bytes Memory information field Active_anon_bytes.</li> <li>TYPE node_memory_Active_anon_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Active_anon_bytes 1.84016896e+08
+</code></pre></div><ul><li>HELP node_memory_Active_bytes Memory information field Active_bytes.</li> <li>TYPE node_memory_Active_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Active_bytes 1.378852864e+09
+</code></pre></div><ul><li>HELP node_memory_Active_file_bytes Memory information field Active_file_bytes.</li> <li>TYPE node_memory_Active_file_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Active_file_bytes 1.194835968e+09
+</code></pre></div><ul><li>HELP node_memory_AnonHugePages_bytes Memory information field AnonHugePages_bytes.</li> <li>TYPE node_memory_AnonHugePages_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_AnonHugePages_bytes 1.4680064e+07
+</code></pre></div><ul><li>HELP node_memory_AnonPages_bytes Memory information field AnonPages_bytes.</li> <li>TYPE node_memory_AnonPages_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_AnonPages_bytes 1.83099392e+08
+</code></pre></div><ul><li>HELP node_memory_Bounce_bytes Memory information field Bounce_bytes.</li> <li>TYPE node_memory_Bounce_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Bounce_bytes 0
+</code></pre></div><ul><li>HELP node_memory_Buffers_bytes Memory information field Buffers_bytes.</li> <li>TYPE node_memory_Buffers_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Buffers_bytes 1.8884608e+08
+</code></pre></div><ul><li>HELP node_memory_Cached_bytes Memory information field Cached_bytes.</li> <li>TYPE node_memory_Cached_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Cached_bytes 1.883066368e+09
+</code></pre></div><ul><li>HELP node_memory_CmaFree_bytes Memory information field CmaFree_bytes.</li> <li>TYPE node_memory_CmaFree_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_CmaFree_bytes 0
+</code></pre></div><ul><li>HELP node_memory_CmaTotal_bytes Memory information field CmaTotal_bytes.</li> <li>TYPE node_memory_CmaTotal_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_CmaTotal_bytes 0
+</code></pre></div><ul><li>HELP node_memory_CommitLimit_bytes Memory information field CommitLimit_bytes.</li> <li>TYPE node_memory_CommitLimit_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_CommitLimit_bytes 4.100452352e+09
+</code></pre></div><ul><li>HELP node_memory_Committed_AS_bytes Memory information field Committed_AS_bytes.</li> <li>TYPE node_memory_Committed_AS_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Committed_AS_bytes 1.336123392e+09
+</code></pre></div><ul><li>HELP node_memory_DirectMap1G_bytes Memory information field DirectMap1G_bytes.</li> <li>TYPE node_memory_DirectMap1G_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_DirectMap1G_bytes 5.36870912e+09
+</code></pre></div><ul><li>HELP node_memory_DirectMap2M_bytes Memory information field DirectMap2M_bytes.</li> <li>TYPE node_memory_DirectMap2M_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_DirectMap2M_bytes 5.286920192e+09
+</code></pre></div><ul><li>HELP node_memory_DirectMap4k_bytes Memory information field DirectMap4k_bytes.</li> <li>TYPE node_memory_DirectMap4k_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_DirectMap4k_bytes 8.1641472e+07
+</code></pre></div><ul><li>HELP node_memory_Dirty_bytes Memory information field Dirty_bytes.</li> <li>TYPE node_memory_Dirty_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Dirty_bytes 471040
+</code></pre></div><ul><li>HELP node_memory_HardwareCorrupted_bytes Memory information field HardwareCorrupted_bytes.</li> <li>TYPE node_memory_HardwareCorrupted_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_HardwareCorrupted_bytes 0
+</code></pre></div><ul><li>HELP node_memory_HugePages_Free Memory information field HugePages_Free.</li> <li>TYPE node_memory_HugePages_Free gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_HugePages_Free 0
+</code></pre></div><ul><li>HELP node_memory_HugePages_Rsvd Memory information field HugePages_Rsvd.</li> <li>TYPE node_memory_HugePages_Rsvd gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_HugePages_Rsvd 0
+</code></pre></div><ul><li>HELP node_memory_HugePages_Surp Memory information field HugePages_Surp.</li> <li>TYPE node_memory_HugePages_Surp gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_HugePages_Surp 0
+</code></pre></div><ul><li>HELP node_memory_HugePages_Total Memory information field HugePages_Total.</li> <li>TYPE node_memory_HugePages_Total gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_HugePages_Total 0
+</code></pre></div><ul><li>HELP node_memory_Hugepagesize_bytes Memory information field Hugepagesize_bytes.</li> <li>TYPE node_memory_Hugepagesize_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Hugepagesize_bytes 2.097152e+06
+</code></pre></div><ul><li>HELP node_memory_Inactive_anon_bytes Memory information field Inactive_anon_bytes.</li> <li>TYPE node_memory_Inactive_anon_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Inactive_anon_bytes 782336
+</code></pre></div><ul><li>HELP node_memory_Inactive_bytes Memory information field Inactive_bytes.</li> <li>TYPE node_memory_Inactive_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Inactive_bytes 8.75900928e+08
+</code></pre></div><ul><li>HELP node_memory_Inactive_file_bytes Memory information field Inactive_file_bytes.</li> <li>TYPE node_memory_Inactive_file_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Inactive_file_bytes 8.75118592e+08
+</code></pre></div><ul><li>HELP node_memory_KernelStack_bytes Memory information field KernelStack_bytes.</li> <li>TYPE node_memory_KernelStack_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_KernelStack_bytes 3.293184e+06
+</code></pre></div><ul><li>HELP node_memory_Mapped_bytes Memory information field Mapped_bytes.</li> <li>TYPE node_memory_Mapped_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Mapped_bytes 1.46415616e+08
+</code></pre></div><ul><li>HELP node_memory_MemAvailable_bytes Memory information field MemAvailable_bytes.</li> <li>TYPE node_memory_MemAvailable_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_MemAvailable_bytes 7.591038976e+09
+</code></pre></div><ul><li>HELP node_memory_MemFree_bytes Memory information field MemFree_bytes.</li> <li>TYPE node_memory_MemFree_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_MemFree_bytes 5.652717568e+09
+</code></pre></div><ul><li>HELP node_memory_MemTotal_bytes Memory information field MemTotal_bytes.</li> <li>TYPE node_memory_MemTotal_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_MemTotal_bytes 8.2009088e+09
+</code></pre></div><ul><li>HELP node_memory_Mlocked_bytes Memory information field Mlocked_bytes.</li> <li>TYPE node_memory_Mlocked_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Mlocked_bytes 0
+</code></pre></div><ul><li>HELP node_memory_NFS_Unstable_bytes Memory information field NFS_Unstable_bytes.</li> <li>TYPE node_memory_NFS_Unstable_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_NFS_Unstable_bytes 0
+</code></pre></div><ul><li>HELP node_memory_PageTables_bytes Memory information field PageTables_bytes.</li> <li>TYPE node_memory_PageTables_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_PageTables_bytes 6.938624e+06
+</code></pre></div><ul><li>HELP node_memory_SReclaimable_bytes Memory information field SReclaimable_bytes.</li> <li>TYPE node_memory_SReclaimable_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_SReclaimable_bytes 1.81600256e+08
+</code></pre></div><ul><li>HELP node_memory_SUnreclaim_bytes Memory information field SUnreclaim_bytes.</li> <li>TYPE node_memory_SUnreclaim_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_SUnreclaim_bytes 1.816576e+07
+</code></pre></div><ul><li>HELP node_memory_Shmem_bytes Memory information field Shmem_bytes.</li> <li>TYPE node_memory_Shmem_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Shmem_bytes 1.961984e+06
+</code></pre></div><ul><li>HELP node_memory_Slab_bytes Memory information field Slab_bytes.</li> <li>TYPE node_memory_Slab_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Slab_bytes 1.99766016e+08
+</code></pre></div><ul><li>HELP node_memory_SwapCached_bytes Memory information field SwapCached_bytes.</li> <li>TYPE node_memory_SwapCached_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_SwapCached_bytes 0
+</code></pre></div><ul><li>HELP node_memory_SwapFree_bytes Memory information field SwapFree_bytes.</li> <li>TYPE node_memory_SwapFree_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_SwapFree_bytes 0
+</code></pre></div><ul><li>HELP node_memory_SwapTotal_bytes Memory information field SwapTotal_bytes.</li> <li>TYPE node_memory_SwapTotal_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_SwapTotal_bytes 0
+</code></pre></div><ul><li>HELP node_memory_Unevictable_bytes Memory information field Unevictable_bytes.</li> <li>TYPE node_memory_Unevictable_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Unevictable_bytes 0
+</code></pre></div><ul><li>HELP node_memory_VmallocChunk_bytes Memory information field VmallocChunk_bytes.</li> <li>TYPE node_memory_VmallocChunk_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_VmallocChunk_bytes 3.5184345346048e+13
+</code></pre></div><ul><li>HELP node_memory_VmallocTotal_bytes Memory information field VmallocTotal_bytes.</li> <li>TYPE node_memory_VmallocTotal_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_VmallocTotal_bytes 3.5184372087808e+13
+</code></pre></div><ul><li>HELP node_memory_VmallocUsed_bytes Memory information field VmallocUsed_bytes.</li> <li>TYPE node_memory_VmallocUsed_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_VmallocUsed_bytes 2.05824e+07
+</code></pre></div><ul><li>HELP node_memory_WritebackTmp_bytes Memory information field WritebackTmp_bytes.</li> <li>TYPE node_memory_WritebackTmp_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_WritebackTmp_bytes 0
+</code></pre></div><ul><li>HELP node_memory_Writeback_bytes Memory information field Writeback_bytes.</li> <li>TYPE node_memory_Writeback_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_memory_Writeback_bytes 0
+</code></pre></div><ul><li>HELP node_netstat_Icmp6_InErrors Statistic Icmp6InErrors.</li> <li>TYPE node_netstat_Icmp6_InErrors untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Icmp6_InErrors 0
+</code></pre></div><ul><li>HELP node_netstat_Icmp6_InMsgs Statistic Icmp6InMsgs.</li> <li>TYPE node_netstat_Icmp6_InMsgs untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Icmp6_InMsgs 1033
+</code></pre></div><ul><li>HELP node_netstat_Icmp6_OutMsgs Statistic Icmp6OutMsgs.</li> <li>TYPE node_netstat_Icmp6_OutMsgs untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Icmp6_OutMsgs 4140
+</code></pre></div><ul><li>HELP node_netstat_Icmp_InErrors Statistic IcmpInErrors.</li> <li>TYPE node_netstat_Icmp_InErrors untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Icmp_InErrors 0
+</code></pre></div><ul><li>HELP node_netstat_Icmp_InMsgs Statistic IcmpInMsgs.</li> <li>TYPE node_netstat_Icmp_InMsgs untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Icmp_InMsgs 1.70485e+06
+</code></pre></div><ul><li>HELP node_netstat_Icmp_OutMsgs Statistic IcmpOutMsgs.</li> <li>TYPE node_netstat_Icmp_OutMsgs untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Icmp_OutMsgs 1.70485e+06
+</code></pre></div><ul><li>HELP node_netstat_Ip6_InOctets Statistic Ip6InOctets.</li> <li>TYPE node_netstat_Ip6_InOctets untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Ip6_InOctets 554891
+</code></pre></div><ul><li>HELP node_netstat_Ip6_OutOctets Statistic Ip6OutOctets.</li> <li>TYPE node_netstat_Ip6_OutOctets untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Ip6_OutOctets 861203
+</code></pre></div><ul><li>HELP node_netstat_IpExt_InOctets Statistic IpExtInOctets.</li> <li>TYPE node_netstat_IpExt_InOctets untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_IpExt_InOctets 1.4188296954e+10
+</code></pre></div><ul><li>HELP node_netstat_IpExt_OutOctets Statistic IpExtOutOctets.</li> <li>TYPE node_netstat_IpExt_OutOctets untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_IpExt_OutOctets 1.9765304565e+10
+</code></pre></div><ul><li>HELP node_netstat_Ip_Forwarding Statistic IpForwarding.</li> <li>TYPE node_netstat_Ip_Forwarding untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Ip_Forwarding 2
+</code></pre></div><ul><li>HELP node_netstat_TcpExt_ListenDrops Statistic TcpExtListenDrops.</li> <li>TYPE node_netstat_TcpExt_ListenDrops untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_TcpExt_ListenDrops 3760
+</code></pre></div><ul><li>HELP node_netstat_TcpExt_ListenOverflows Statistic TcpExtListenOverflows.</li> <li>TYPE node_netstat_TcpExt_ListenOverflows untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_TcpExt_ListenOverflows 0
+</code></pre></div><ul><li>HELP node_netstat_TcpExt_SyncookiesFailed Statistic TcpExtSyncookiesFailed.</li> <li>TYPE node_netstat_TcpExt_SyncookiesFailed untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_TcpExt_SyncookiesFailed 957
+</code></pre></div><ul><li>HELP node_netstat_TcpExt_SyncookiesRecv Statistic TcpExtSyncookiesRecv.</li> <li>TYPE node_netstat_TcpExt_SyncookiesRecv untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_TcpExt_SyncookiesRecv 0
+</code></pre></div><ul><li>HELP node_netstat_TcpExt_SyncookiesSent Statistic TcpExtSyncookiesSent.</li> <li>TYPE node_netstat_TcpExt_SyncookiesSent untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_TcpExt_SyncookiesSent 0
+</code></pre></div><ul><li>HELP node_netstat_TcpExt_TCPSynRetrans Statistic TcpExtTCPSynRetrans.</li> <li>TYPE node_netstat_TcpExt_TCPSynRetrans untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_TcpExt_TCPSynRetrans 11244
+</code></pre></div><ul><li>HELP node_netstat_Tcp_ActiveOpens Statistic TcpActiveOpens.</li> <li>TYPE node_netstat_Tcp_ActiveOpens untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Tcp_ActiveOpens 1.679804e+06
+</code></pre></div><ul><li>HELP node_netstat_Tcp_CurrEstab Statistic TcpCurrEstab.</li> <li>TYPE node_netstat_Tcp_CurrEstab untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Tcp_CurrEstab 5
+</code></pre></div><ul><li>HELP node_netstat_Tcp_InErrs Statistic TcpInErrs.</li> <li>TYPE node_netstat_Tcp_InErrs untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Tcp_InErrs 17
+</code></pre></div><ul><li>HELP node_netstat_Tcp_InSegs Statistic TcpInSegs.</li> <li>TYPE node_netstat_Tcp_InSegs untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Tcp_InSegs 2.7602009e+07
+</code></pre></div><ul><li>HELP node_netstat_Tcp_OutRsts Statistic TcpOutRsts.</li> <li>TYPE node_netstat_Tcp_OutRsts untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Tcp_OutRsts 23564
+</code></pre></div><ul><li>HELP node_netstat_Tcp_OutSegs Statistic TcpOutSegs.</li> <li>TYPE node_netstat_Tcp_OutSegs untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Tcp_OutSegs 3.3860244e+07
+</code></pre></div><ul><li>HELP node_netstat_Tcp_PassiveOpens Statistic TcpPassiveOpens.</li> <li>TYPE node_netstat_Tcp_PassiveOpens untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Tcp_PassiveOpens 2.244364e+06
+</code></pre></div><ul><li>HELP node_netstat_Tcp_RetransSegs Statistic TcpRetransSegs.</li> <li>TYPE node_netstat_Tcp_RetransSegs untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Tcp_RetransSegs 36317
+</code></pre></div><ul><li>HELP node_netstat_Udp6_InDatagrams Statistic Udp6InDatagrams.</li> <li>TYPE node_netstat_Udp6_InDatagrams untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Udp6_InDatagrams 8623
+</code></pre></div><ul><li>HELP node_netstat_Udp6_InErrors Statistic Udp6InErrors.</li> <li>TYPE node_netstat_Udp6_InErrors untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Udp6_InErrors 0
+</code></pre></div><ul><li>HELP node_netstat_Udp6_NoPorts Statistic Udp6NoPorts.</li> <li>TYPE node_netstat_Udp6_NoPorts untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Udp6_NoPorts 0
+</code></pre></div><ul><li>HELP node_netstat_Udp6_OutDatagrams Statistic Udp6OutDatagrams.</li> <li>TYPE node_netstat_Udp6_OutDatagrams untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Udp6_OutDatagrams 8623
+</code></pre></div><ul><li>HELP node_netstat_Udp6_RcvbufErrors Statistic Udp6RcvbufErrors.</li> <li>TYPE node_netstat_Udp6_RcvbufErrors untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Udp6_RcvbufErrors 0
+</code></pre></div><ul><li>HELP node_netstat_Udp6_SndbufErrors Statistic Udp6SndbufErrors.</li> <li>TYPE node_netstat_Udp6_SndbufErrors untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Udp6_SndbufErrors 0
+</code></pre></div><ul><li>HELP node_netstat_UdpLite6_InErrors Statistic UdpLite6InErrors.</li> <li>TYPE node_netstat_UdpLite6_InErrors untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_UdpLite6_InErrors 0
+</code></pre></div><ul><li>HELP node_netstat_UdpLite_InErrors Statistic UdpLiteInErrors.</li> <li>TYPE node_netstat_UdpLite_InErrors untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_UdpLite_InErrors 0
+</code></pre></div><ul><li>HELP node_netstat_Udp_InDatagrams Statistic UdpInDatagrams.</li> <li>TYPE node_netstat_Udp_InDatagrams untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Udp_InDatagrams 3.606866e+06
+</code></pre></div><ul><li>HELP node_netstat_Udp_InErrors Statistic UdpInErrors.</li> <li>TYPE node_netstat_Udp_InErrors untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Udp_InErrors 0
+</code></pre></div><ul><li>HELP node_netstat_Udp_NoPorts Statistic UdpNoPorts.</li> <li>TYPE node_netstat_Udp_NoPorts untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Udp_NoPorts 0
+</code></pre></div><ul><li>HELP node_netstat_Udp_OutDatagrams Statistic UdpOutDatagrams.</li> <li>TYPE node_netstat_Udp_OutDatagrams untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Udp_OutDatagrams 3.608297e+06
+</code></pre></div><ul><li>HELP node_netstat_Udp_RcvbufErrors Statistic UdpRcvbufErrors.</li> <li>TYPE node_netstat_Udp_RcvbufErrors untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Udp_RcvbufErrors 0
+</code></pre></div><ul><li>HELP node_netstat_Udp_SndbufErrors Statistic UdpSndbufErrors.</li> <li>TYPE node_netstat_Udp_SndbufErrors untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_netstat_Udp_SndbufErrors 0
+</code></pre></div><ul><li>HELP node_network_address_assign_type address_assign_type value of /sys/class/net/&lt;iface&gt;.</li> <li>TYPE node_network_address_assign_type gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_address_assign_type{device=&quot;eth0&quot;} 0
+node_network_address_assign_type{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_carrier carrier value of /sys/class/net/&lt;iface&gt;.</li> <li>TYPE node_network_carrier gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_carrier{device=&quot;eth0&quot;} 1
+node_network_carrier{device=&quot;lo&quot;} 1
+</code></pre></div><ul><li>HELP node_network_carrier_changes_total carrier_changes_total value of /sys/class/net/&lt;iface&gt;.</li> <li>TYPE node_network_carrier_changes_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_carrier_changes_total{device=&quot;eth0&quot;} 2
+node_network_carrier_changes_total{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_device_id device_id value of /sys/class/net/&lt;iface&gt;.</li> <li>TYPE node_network_device_id gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_device_id{device=&quot;eth0&quot;} 0
+node_network_device_id{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_dormant dormant value of /sys/class/net/&lt;iface&gt;.</li> <li>TYPE node_network_dormant gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_dormant{device=&quot;eth0&quot;} 0
+node_network_dormant{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_flags flags value of /sys/class/net/&lt;iface&gt;.</li> <li>TYPE node_network_flags gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_flags{device=&quot;eth0&quot;} 4099
+node_network_flags{device=&quot;lo&quot;} 9
+</code></pre></div><ul><li>HELP node_network_iface_id iface_id value of /sys/class/net/&lt;iface&gt;.</li> <li>TYPE node_network_iface_id gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_iface_id{device=&quot;eth0&quot;} 2
+node_network_iface_id{device=&quot;lo&quot;} 1
+</code></pre></div><ul><li>HELP node_network_iface_link iface_link value of /sys/class/net/&lt;iface&gt;.</li> <li>TYPE node_network_iface_link gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_iface_link{device=&quot;eth0&quot;} 2
+node_network_iface_link{device=&quot;lo&quot;} 1
+</code></pre></div><ul><li>HELP node_network_iface_link_mode iface_link_mode value of /sys/class/net/&lt;iface&gt;.</li> <li>TYPE node_network_iface_link_mode gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_iface_link_mode{device=&quot;eth0&quot;} 0
+node_network_iface_link_mode{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_info Non-numeric data from /sys/class/net/&lt;iface&gt;, value is always 1.</li> <li>TYPE node_network_info gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_info{address=&quot;00:00:00:00:00:00&quot;,broadcast=&quot;00:00:00:00:00:00&quot;,device=&quot;lo&quot;,duplex=&quot;&quot;,ifalias=&quot;&quot;,operstate=&quot;unknown&quot;} 1
+node_network_info{address=&quot;52:54:00:76:41:0c&quot;,broadcast=&quot;ff:ff:ff:ff:ff:ff&quot;,device=&quot;eth0&quot;,duplex=&quot;&quot;,ifalias=&quot;&quot;,operstate=&quot;up&quot;} 1
+</code></pre></div><ul><li>HELP node_network_mtu_bytes mtu_bytes value of /sys/class/net/&lt;iface&gt;.</li> <li>TYPE node_network_mtu_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_mtu_bytes{device=&quot;eth0&quot;} 1500
+node_network_mtu_bytes{device=&quot;lo&quot;} 65536
+</code></pre></div><ul><li>HELP node_network_net_dev_group net_dev_group value of /sys/class/net/&lt;iface&gt;.</li> <li>TYPE node_network_net_dev_group gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_net_dev_group{device=&quot;eth0&quot;} 0
+node_network_net_dev_group{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_protocol_type protocol_type value of /sys/class/net/&lt;iface&gt;.</li> <li>TYPE node_network_protocol_type gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_protocol_type{device=&quot;eth0&quot;} 1
+node_network_protocol_type{device=&quot;lo&quot;} 772
+</code></pre></div><ul><li>HELP node_network_receive_bytes_total Network device statistic receive_bytes.</li> <li>TYPE node_network_receive_bytes_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_receive_bytes_total{device=&quot;eth0&quot;} 1.5115157798e+10
+node_network_receive_bytes_total{device=&quot;lo&quot;} 556351
+</code></pre></div><ul><li>HELP node_network_receive_compressed_total Network device statistic receive_compressed.</li> <li>TYPE node_network_receive_compressed_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_receive_compressed_total{device=&quot;eth0&quot;} 0
+node_network_receive_compressed_total{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_receive_drop_total Network device statistic receive_drop.</li> <li>TYPE node_network_receive_drop_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_receive_drop_total{device=&quot;eth0&quot;} 0
+node_network_receive_drop_total{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_receive_errs_total Network device statistic receive_errs.</li> <li>TYPE node_network_receive_errs_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_receive_errs_total{device=&quot;eth0&quot;} 0
+node_network_receive_errs_total{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_receive_fifo_total Network device statistic receive_fifo.</li> <li>TYPE node_network_receive_fifo_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_receive_fifo_total{device=&quot;eth0&quot;} 0
+node_network_receive_fifo_total{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_receive_frame_total Network device statistic receive_frame.</li> <li>TYPE node_network_receive_frame_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_receive_frame_total{device=&quot;eth0&quot;} 0
+node_network_receive_frame_total{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_receive_multicast_total Network device statistic receive_multicast.</li> <li>TYPE node_network_receive_multicast_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_receive_multicast_total{device=&quot;eth0&quot;} 0
+node_network_receive_multicast_total{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_receive_packets_total Network device statistic receive_packets.</li> <li>TYPE node_network_receive_packets_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_receive_packets_total{device=&quot;eth0&quot;} 4.0070164e+07
+node_network_receive_packets_total{device=&quot;lo&quot;} 9670
+</code></pre></div><ul><li>HELP node_network_transmit_bytes_total Network device statistic transmit_bytes.</li> <li>TYPE node_network_transmit_bytes_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_transmit_bytes_total{device=&quot;eth0&quot;} 2.0327181139e+10
+node_network_transmit_bytes_total{device=&quot;lo&quot;} 556351
+</code></pre></div><ul><li>HELP node_network_transmit_carrier_total Network device statistic transmit_carrier.</li> <li>TYPE node_network_transmit_carrier_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_transmit_carrier_total{device=&quot;eth0&quot;} 0
+node_network_transmit_carrier_total{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_transmit_colls_total Network device statistic transmit_colls.</li> <li>TYPE node_network_transmit_colls_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_transmit_colls_total{device=&quot;eth0&quot;} 0
+node_network_transmit_colls_total{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_transmit_compressed_total Network device statistic transmit_compressed.</li> <li>TYPE node_network_transmit_compressed_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_transmit_compressed_total{device=&quot;eth0&quot;} 0
+node_network_transmit_compressed_total{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_transmit_drop_total Network device statistic transmit_drop.</li> <li>TYPE node_network_transmit_drop_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_transmit_drop_total{device=&quot;eth0&quot;} 0
+node_network_transmit_drop_total{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_transmit_errs_total Network device statistic transmit_errs.</li> <li>TYPE node_network_transmit_errs_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_transmit_errs_total{device=&quot;eth0&quot;} 0
+node_network_transmit_errs_total{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_transmit_fifo_total Network device statistic transmit_fifo.</li> <li>TYPE node_network_transmit_fifo_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_transmit_fifo_total{device=&quot;eth0&quot;} 0
+node_network_transmit_fifo_total{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_network_transmit_packets_total Network device statistic transmit_packets.</li> <li>TYPE node_network_transmit_packets_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_transmit_packets_total{device=&quot;eth0&quot;} 3.9512859e+07
+node_network_transmit_packets_total{device=&quot;lo&quot;} 9670
+</code></pre></div><ul><li>HELP node_network_transmit_queue_length transmit_queue_length value of /sys/class/net/&lt;iface&gt;.</li> <li>TYPE node_network_transmit_queue_length gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_transmit_queue_length{device=&quot;eth0&quot;} 1000
+node_network_transmit_queue_length{device=&quot;lo&quot;} 1000
+</code></pre></div><ul><li>HELP node_network_up Value is 1 if operstate is 'up', 0 otherwise.</li> <li>TYPE node_network_up gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_network_up{device=&quot;eth0&quot;} 1
+node_network_up{device=&quot;lo&quot;} 0
+</code></pre></div><ul><li>HELP node_procs_blocked Number of processes blocked waiting for I/O to complete.</li> <li>TYPE node_procs_blocked gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_procs_blocked 0
+</code></pre></div><ul><li>HELP node_procs_running Number of processes in runnable state.</li> <li>TYPE node_procs_running gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_procs_running 10
+</code></pre></div><ul><li>HELP node_schedstat_running_seconds_total Number of seconds CPU spent running a process.</li> <li>TYPE node_schedstat_running_seconds_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_schedstat_running_seconds_total{cpu=&quot;0&quot;} 12899.548153756
+node_schedstat_running_seconds_total{cpu=&quot;1&quot;} 12976.234048749
+node_schedstat_running_seconds_total{cpu=&quot;2&quot;} 12628.053913473
+node_schedstat_running_seconds_total{cpu=&quot;3&quot;} 12506.736377166
+</code></pre></div><ul><li>HELP node_schedstat_timeslices_total Number of timeslices executed by CPU.</li> <li>TYPE node_schedstat_timeslices_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_schedstat_timeslices_total{cpu=&quot;0&quot;} 4.6471194e+08
+node_schedstat_timeslices_total{cpu=&quot;1&quot;} 4.66750548e+08
+node_schedstat_timeslices_total{cpu=&quot;2&quot;} 4.66524095e+08
+node_schedstat_timeslices_total{cpu=&quot;3&quot;} 4.67823299e+08
+</code></pre></div><ul><li>HELP node_schedstat_waiting_seconds_total Number of seconds spent by processing waiting for this CPU.</li> <li>TYPE node_schedstat_waiting_seconds_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_schedstat_waiting_seconds_total{cpu=&quot;0&quot;} 1387.294129137
+node_schedstat_waiting_seconds_total{cpu=&quot;1&quot;} 1402.126331615
+node_schedstat_waiting_seconds_total{cpu=&quot;2&quot;} 1360.953398255
+node_schedstat_waiting_seconds_total{cpu=&quot;3&quot;} 1404.21233347
+</code></pre></div><ul><li>HELP node_scrape_collector_duration_seconds node_exporter: Duration of a collector scrape.</li> <li>TYPE node_scrape_collector_duration_seconds gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_scrape_collector_duration_seconds{collector=&quot;arp&quot;} 6.5188e-05
+node_scrape_collector_duration_seconds{collector=&quot;bcache&quot;} 2.3786e-05
+node_scrape_collector_duration_seconds{collector=&quot;bonding&quot;} 1.7397e-05
+node_scrape_collector_duration_seconds{collector=&quot;btrfs&quot;} 1.2256e-05
+node_scrape_collector_duration_seconds{collector=&quot;conntrack&quot;} 2.1834e-05
+node_scrape_collector_duration_seconds{collector=&quot;cpu&quot;} 0.000489135
+node_scrape_collector_duration_seconds{collector=&quot;cpufreq&quot;} 6.5025e-05
+node_scrape_collector_duration_seconds{collector=&quot;diskstats&quot;} 7.5638e-05
+node_scrape_collector_duration_seconds{collector=&quot;edac&quot;} 3.0287e-05
+node_scrape_collector_duration_seconds{collector=&quot;entropy&quot;} 8.2823e-05
+node_scrape_collector_duration_seconds{collector=&quot;fibrechannel&quot;} 1.6354e-05
+node_scrape_collector_duration_seconds{collector=&quot;filefd&quot;} 3.8399e-05
+node_scrape_collector_duration_seconds{collector=&quot;filesystem&quot;} 0.000327518
+node_scrape_collector_duration_seconds{collector=&quot;hwmon&quot;} 3.2135e-05
+node_scrape_collector_duration_seconds{collector=&quot;infiniband&quot;} 1.575e-05
+node_scrape_collector_duration_seconds{collector=&quot;ipvs&quot;} 2.3561e-05
+node_scrape_collector_duration_seconds{collector=&quot;loadavg&quot;} 3.8177e-05
+node_scrape_collector_duration_seconds{collector=&quot;mdadm&quot;} 3.0416e-05
+node_scrape_collector_duration_seconds{collector=&quot;meminfo&quot;} 0.000209465
+node_scrape_collector_duration_seconds{collector=&quot;netclass&quot;} 0.001321232
+node_scrape_collector_duration_seconds{collector=&quot;netdev&quot;} 0.000127473
+node_scrape_collector_duration_seconds{collector=&quot;netstat&quot;} 0.000947188
+node_scrape_collector_duration_seconds{collector=&quot;nfs&quot;} 1.8854e-05
+node_scrape_collector_duration_seconds{collector=&quot;nfsd&quot;} 2.201e-05
+node_scrape_collector_duration_seconds{collector=&quot;powersupplyclass&quot;} 2.7998e-05
+node_scrape_collector_duration_seconds{collector=&quot;pressure&quot;} 4.5004e-05
+node_scrape_collector_duration_seconds{collector=&quot;rapl&quot;} 2.0963e-05
+node_scrape_collector_duration_seconds{collector=&quot;schedstat&quot;} 7.8778e-05
+node_scrape_collector_duration_seconds{collector=&quot;sockstat&quot;} 0.000131083
+node_scrape_collector_duration_seconds{collector=&quot;softnet&quot;} 7.1067e-05
+node_scrape_collector_duration_seconds{collector=&quot;stat&quot;} 0.000161837
+node_scrape_collector_duration_seconds{collector=&quot;textfile&quot;} 8.4e-06
+node_scrape_collector_duration_seconds{collector=&quot;thermal_zone&quot;} 0.000249492
+node_scrape_collector_duration_seconds{collector=&quot;time&quot;} 1.1026e-05
+node_scrape_collector_duration_seconds{collector=&quot;timex&quot;} 1.2702e-05
+node_scrape_collector_duration_seconds{collector=&quot;udp_queues&quot;} 0.000139454
+node_scrape_collector_duration_seconds{collector=&quot;uname&quot;} 1.1357e-05
+node_scrape_collector_duration_seconds{collector=&quot;vmstat&quot;} 0.000197312
+node_scrape_collector_duration_seconds{collector=&quot;xfs&quot;} 1.3884e-05
+node_scrape_collector_duration_seconds{collector=&quot;zfs&quot;} 1.8456e-05
+</code></pre></div><ul><li>HELP node_scrape_collector_success node_exporter: Whether a collector succeeded.</li> <li>TYPE node_scrape_collector_success gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_scrape_collector_success{collector=&quot;arp&quot;} 1
+node_scrape_collector_success{collector=&quot;bcache&quot;} 1
+node_scrape_collector_success{collector=&quot;bonding&quot;} 0
+node_scrape_collector_success{collector=&quot;btrfs&quot;} 1
+node_scrape_collector_success{collector=&quot;conntrack&quot;} 0
+node_scrape_collector_success{collector=&quot;cpu&quot;} 1
+node_scrape_collector_success{collector=&quot;cpufreq&quot;} 1
+node_scrape_collector_success{collector=&quot;diskstats&quot;} 1
+node_scrape_collector_success{collector=&quot;edac&quot;} 1
+node_scrape_collector_success{collector=&quot;entropy&quot;} 1
+node_scrape_collector_success{collector=&quot;fibrechannel&quot;} 0
+node_scrape_collector_success{collector=&quot;filefd&quot;} 1
+node_scrape_collector_success{collector=&quot;filesystem&quot;} 1
+node_scrape_collector_success{collector=&quot;hwmon&quot;} 1
+node_scrape_collector_success{collector=&quot;infiniband&quot;} 0
+node_scrape_collector_success{collector=&quot;ipvs&quot;} 0
+node_scrape_collector_success{collector=&quot;loadavg&quot;} 1
+node_scrape_collector_success{collector=&quot;mdadm&quot;} 1
+node_scrape_collector_success{collector=&quot;meminfo&quot;} 1
+node_scrape_collector_success{collector=&quot;netclass&quot;} 1
+node_scrape_collector_success{collector=&quot;netdev&quot;} 1
+node_scrape_collector_success{collector=&quot;netstat&quot;} 1
+node_scrape_collector_success{collector=&quot;nfs&quot;} 0
+node_scrape_collector_success{collector=&quot;nfsd&quot;} 0
+node_scrape_collector_success{collector=&quot;powersupplyclass&quot;} 1
+node_scrape_collector_success{collector=&quot;pressure&quot;} 0
+node_scrape_collector_success{collector=&quot;rapl&quot;} 1
+node_scrape_collector_success{collector=&quot;schedstat&quot;} 1
+node_scrape_collector_success{collector=&quot;sockstat&quot;} 1
+node_scrape_collector_success{collector=&quot;softnet&quot;} 1
+node_scrape_collector_success{collector=&quot;stat&quot;} 1
+node_scrape_collector_success{collector=&quot;textfile&quot;} 1
+node_scrape_collector_success{collector=&quot;thermal_zone&quot;} 1
+node_scrape_collector_success{collector=&quot;time&quot;} 1
+node_scrape_collector_success{collector=&quot;timex&quot;} 1
+node_scrape_collector_success{collector=&quot;udp_queues&quot;} 1
+node_scrape_collector_success{collector=&quot;uname&quot;} 1
+node_scrape_collector_success{collector=&quot;vmstat&quot;} 1
+node_scrape_collector_success{collector=&quot;xfs&quot;} 1
+node_scrape_collector_success{collector=&quot;zfs&quot;} 0
+</code></pre></div><ul><li>HELP node_sockstat_FRAG6_inuse Number of FRAG6 sockets in state inuse.</li> <li>TYPE node_sockstat_FRAG6_inuse gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_FRAG6_inuse 0
+</code></pre></div><ul><li>HELP node_sockstat_FRAG6_memory Number of FRAG6 sockets in state memory.</li> <li>TYPE node_sockstat_FRAG6_memory gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_FRAG6_memory 0
+</code></pre></div><ul><li>HELP node_sockstat_FRAG_inuse Number of FRAG sockets in state inuse.</li> <li>TYPE node_sockstat_FRAG_inuse gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_FRAG_inuse 0
+</code></pre></div><ul><li>HELP node_sockstat_FRAG_memory Number of FRAG sockets in state memory.</li> <li>TYPE node_sockstat_FRAG_memory gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_FRAG_memory 0
+</code></pre></div><ul><li>HELP node_sockstat_RAW6_inuse Number of RAW6 sockets in state inuse.</li> <li>TYPE node_sockstat_RAW6_inuse gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_RAW6_inuse 0
+</code></pre></div><ul><li>HELP node_sockstat_RAW_inuse Number of RAW sockets in state inuse.</li> <li>TYPE node_sockstat_RAW_inuse gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_RAW_inuse 0
+</code></pre></div><ul><li>HELP node_sockstat_TCP6_inuse Number of TCP6 sockets in state inuse.</li> <li>TYPE node_sockstat_TCP6_inuse gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_TCP6_inuse 5
+</code></pre></div><ul><li>HELP node_sockstat_TCP_alloc Number of TCP sockets in state alloc.</li> <li>TYPE node_sockstat_TCP_alloc gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_TCP_alloc 16
+</code></pre></div><ul><li>HELP node_sockstat_TCP_inuse Number of TCP sockets in state inuse.</li> <li>TYPE node_sockstat_TCP_inuse gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_TCP_inuse 11
+</code></pre></div><ul><li>HELP node_sockstat_TCP_mem Number of TCP sockets in state mem.</li> <li>TYPE node_sockstat_TCP_mem gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_TCP_mem 6
+</code></pre></div><ul><li>HELP node_sockstat_TCP_mem_bytes Number of TCP sockets in state mem_bytes.</li> <li>TYPE node_sockstat_TCP_mem_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_TCP_mem_bytes 24576
+</code></pre></div><ul><li>HELP node_sockstat_TCP_orphan Number of TCP sockets in state orphan.</li> <li>TYPE node_sockstat_TCP_orphan gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_TCP_orphan 0
+</code></pre></div><ul><li>HELP node_sockstat_TCP_tw Number of TCP sockets in state tw.</li> <li>TYPE node_sockstat_TCP_tw gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_TCP_tw 1
+</code></pre></div><ul><li>HELP node_sockstat_UDP6_inuse Number of UDP6 sockets in state inuse.</li> <li>TYPE node_sockstat_UDP6_inuse gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_UDP6_inuse 2
+</code></pre></div><ul><li>HELP node_sockstat_UDPLITE6_inuse Number of UDPLITE6 sockets in state inuse.</li> <li>TYPE node_sockstat_UDPLITE6_inuse gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_UDPLITE6_inuse 0
+</code></pre></div><ul><li>HELP node_sockstat_UDPLITE_inuse Number of UDPLITE sockets in state inuse.</li> <li>TYPE node_sockstat_UDPLITE_inuse gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_UDPLITE_inuse 0
+</code></pre></div><ul><li>HELP node_sockstat_UDP_inuse Number of UDP sockets in state inuse.</li> <li>TYPE node_sockstat_UDP_inuse gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_UDP_inuse 4
+</code></pre></div><ul><li>HELP node_sockstat_UDP_mem Number of UDP sockets in state mem.</li> <li>TYPE node_sockstat_UDP_mem gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_UDP_mem 3
+</code></pre></div><ul><li>HELP node_sockstat_UDP_mem_bytes Number of UDP sockets in state mem_bytes.</li> <li>TYPE node_sockstat_UDP_mem_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_UDP_mem_bytes 12288
+</code></pre></div><ul><li>HELP node_sockstat_sockets_used Number of IPv4 sockets in use.</li> <li>TYPE node_sockstat_sockets_used gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_sockstat_sockets_used 148
+</code></pre></div><ul><li>HELP node_softnet_dropped_total Number of dropped packets</li> <li>TYPE node_softnet_dropped_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_softnet_dropped_total{cpu=&quot;0&quot;} 0
+node_softnet_dropped_total{cpu=&quot;1&quot;} 0
+node_softnet_dropped_total{cpu=&quot;2&quot;} 0
+node_softnet_dropped_total{cpu=&quot;3&quot;} 0
+</code></pre></div><ul><li>HELP node_softnet_processed_total Number of processed packets</li> <li>TYPE node_softnet_processed_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_softnet_processed_total{cpu=&quot;0&quot;} 9.022559e+06
+node_softnet_processed_total{cpu=&quot;1&quot;} 7.947385e+06
+node_softnet_processed_total{cpu=&quot;2&quot;} 7.761731e+06
+node_softnet_processed_total{cpu=&quot;3&quot;} 8.530596e+06
+</code></pre></div><ul><li>HELP node_softnet_times_squeezed_total Number of times processing packets ran out of quota</li> <li>TYPE node_softnet_times_squeezed_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_softnet_times_squeezed_total{cpu=&quot;0&quot;} 0
+node_softnet_times_squeezed_total{cpu=&quot;1&quot;} 0
+node_softnet_times_squeezed_total{cpu=&quot;2&quot;} 0
+node_softnet_times_squeezed_total{cpu=&quot;3&quot;} 0
+</code></pre></div><ul><li>HELP node_textfile_scrape_error 1 if there was an error opening or reading a file, 0 otherwise</li> <li>TYPE node_textfile_scrape_error gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_textfile_scrape_error 0
+</code></pre></div><ul><li>HELP node_time_seconds System time in seconds since epoch (1970).</li> <li>TYPE node_time_seconds gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_time_seconds 1.627532417187139e+09
+</code></pre></div><ul><li>HELP node_timex_estimated_error_seconds Estimated error in seconds.</li> <li>TYPE node_timex_estimated_error_seconds gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_estimated_error_seconds 0.000175
+</code></pre></div><ul><li>HELP node_timex_frequency_adjustment_ratio Local clock frequency adjustment.</li> <li>TYPE node_timex_frequency_adjustment_ratio gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_frequency_adjustment_ratio 0.9999940445861817
+</code></pre></div><ul><li>HELP node_timex_loop_time_constant Phase-locked loop time constant.</li> <li>TYPE node_timex_loop_time_constant gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_loop_time_constant 10
+</code></pre></div><ul><li>HELP node_timex_maxerror_seconds Maximum error in seconds.</li> <li>TYPE node_timex_maxerror_seconds gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_maxerror_seconds 0.332928
+</code></pre></div><ul><li>HELP node_timex_offset_seconds Time offset in between local system and reference clock.</li> <li>TYPE node_timex_offset_seconds gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_offset_seconds 0.000105698
+</code></pre></div><ul><li>HELP node_timex_pps_calibration_total Pulse per second count of calibration intervals.</li> <li>TYPE node_timex_pps_calibration_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_pps_calibration_total 0
+</code></pre></div><ul><li>HELP node_timex_pps_error_total Pulse per second count of calibration errors.</li> <li>TYPE node_timex_pps_error_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_pps_error_total 0
+</code></pre></div><ul><li>HELP node_timex_pps_frequency_hertz Pulse per second frequency.</li> <li>TYPE node_timex_pps_frequency_hertz gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_pps_frequency_hertz 0
+</code></pre></div><ul><li>HELP node_timex_pps_jitter_seconds Pulse per second jitter.</li> <li>TYPE node_timex_pps_jitter_seconds gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_pps_jitter_seconds 0
+</code></pre></div><ul><li>HELP node_timex_pps_jitter_total Pulse per second count of jitter limit exceeded events.</li> <li>TYPE node_timex_pps_jitter_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_pps_jitter_total 0
+</code></pre></div><ul><li>HELP node_timex_pps_shift_seconds Pulse per second interval duration.</li> <li>TYPE node_timex_pps_shift_seconds gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_pps_shift_seconds 0
+</code></pre></div><ul><li>HELP node_timex_pps_stability_exceeded_total Pulse per second count of stability limit exceeded events.</li> <li>TYPE node_timex_pps_stability_exceeded_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_pps_stability_exceeded_total 0
+</code></pre></div><ul><li>HELP node_timex_pps_stability_hertz Pulse per second stability, average of recent frequency changes.</li> <li>TYPE node_timex_pps_stability_hertz gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_pps_stability_hertz 0
+</code></pre></div><ul><li>HELP node_timex_status Value of the status array bits.</li> <li>TYPE node_timex_status gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_status 8193
+</code></pre></div><ul><li>HELP node_timex_sync_status Is clock synchronized to a reliable server (1 = yes, 0 = no).</li> <li>TYPE node_timex_sync_status gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_sync_status 1
+</code></pre></div><ul><li>HELP node_timex_tai_offset_seconds International Atomic Time (TAI) offset.</li> <li>TYPE node_timex_tai_offset_seconds gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_tai_offset_seconds 0
+</code></pre></div><ul><li>HELP node_timex_tick_seconds Seconds between clock ticks.</li> <li>TYPE node_timex_tick_seconds gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_timex_tick_seconds 0.01
+</code></pre></div><ul><li>HELP node_udp_queues Number of allocated memory in the kernel for UDP datagrams in bytes.</li> <li>TYPE node_udp_queues gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_udp_queues{ip=&quot;v4&quot;,queue=&quot;rx&quot;} 0
+node_udp_queues{ip=&quot;v4&quot;,queue=&quot;tx&quot;} 0
+node_udp_queues{ip=&quot;v6&quot;,queue=&quot;rx&quot;} 0
+node_udp_queues{ip=&quot;v6&quot;,queue=&quot;tx&quot;} 0
+</code></pre></div><ul><li>HELP node_uname_info Labeled system information as provided by the uname system call.</li> <li>TYPE node_uname_info gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_uname_info{domainname=&quot;(none)&quot;,machine=&quot;x86_64&quot;,nodename=&quot;sh2-offline-openresty-1&quot;,release=&quot;3.10.0-1062.18.1.el7.x86_64&quot;,sysname=&quot;Linux&quot;,version=&quot;-1 SMP Tue Mar 17 23:49:17 UTC 2020&quot;} 1
+</code></pre></div><ul><li>HELP node_vmstat_pgfault /proc/vmstat information field pgfault.</li> <li>TYPE node_vmstat_pgfault untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_vmstat_pgfault 3.098028644e+09
+</code></pre></div><ul><li>HELP node_vmstat_pgmajfault /proc/vmstat information field pgmajfault.</li> <li>TYPE node_vmstat_pgmajfault untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_vmstat_pgmajfault 2072
+</code></pre></div><ul><li>HELP node_vmstat_pgpgin /proc/vmstat information field pgpgin.</li> <li>TYPE node_vmstat_pgpgin untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_vmstat_pgpgin 657194
+</code></pre></div><ul><li>HELP node_vmstat_pgpgout /proc/vmstat information field pgpgout.</li> <li>TYPE node_vmstat_pgpgout untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_vmstat_pgpgout 6.0825024e+07
+</code></pre></div><ul><li>HELP node_vmstat_pswpin /proc/vmstat information field pswpin.</li> <li>TYPE node_vmstat_pswpin untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_vmstat_pswpin 0
+</code></pre></div><ul><li>HELP node_vmstat_pswpout /proc/vmstat information field pswpout.</li> <li>TYPE node_vmstat_pswpout untyped</li></ul> <div class="language- extra-class"><pre class="language-text"><code>node_vmstat_pswpout 0
+</code></pre></div><ul><li>HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.</li> <li>TYPE process_cpu_seconds_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>process_cpu_seconds_total 8588.14
+</code></pre></div><ul><li>HELP process_max_fds Maximum number of open file descriptors.</li> <li>TYPE process_max_fds gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>process_max_fds 100000
+</code></pre></div><ul><li>HELP process_open_fds Number of open file descriptors.</li> <li>TYPE process_open_fds gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>process_open_fds 11
+</code></pre></div><ul><li>HELP process_resident_memory_bytes Resident memory size in bytes.</li> <li>TYPE process_resident_memory_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>process_resident_memory_bytes 2.244608e+07
+</code></pre></div><ul><li>HELP process_start_time_seconds Start time of the process since unix epoch in seconds.</li> <li>TYPE process_start_time_seconds gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>process_start_time_seconds 1.62496031363e+09
+</code></pre></div><ul><li>HELP process_virtual_memory_bytes Virtual memory size in bytes.</li> <li>TYPE process_virtual_memory_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>process_virtual_memory_bytes 7.36423936e+08
+</code></pre></div><ul><li>HELP process_virtual_memory_max_bytes Maximum amount of virtual memory available in bytes.</li> <li>TYPE process_virtual_memory_max_bytes gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>process_virtual_memory_max_bytes 1.8446744073709552e+19
+</code></pre></div><ul><li>HELP promhttp_metric_handler_errors_total Total number of internal errors encountered by the promhttp metric handler.</li> <li>TYPE promhttp_metric_handler_errors_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>promhttp_metric_handler_errors_total{cause=&quot;encoding&quot;} 0
+promhttp_metric_handler_errors_total{cause=&quot;gathering&quot;} 0
+</code></pre></div><ul><li>HELP promhttp_metric_handler_requests_in_flight Current number of scrapes being served.</li> <li>TYPE promhttp_metric_handler_requests_in_flight gauge</li></ul> <div class="language- extra-class"><pre class="language-text"><code>promhttp_metric_handler_requests_in_flight 1
+</code></pre></div><ul><li>HELP promhttp_metric_handler_requests_total Total number of scrapes by HTTP status code.</li> <li>TYPE promhttp_metric_handler_requests_total counter</li></ul> <div class="language- extra-class"><pre class="language-text"><code>promhttp_metric_handler_requests_total{code=&quot;200&quot;} 428493
+promhttp_metric_handler_requests_total{code=&quot;500&quot;} 0
+promhttp_metric_handler_requests_total{code=&quot;503&quot;} 0
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/pages/prometheus/target_map_my_1.html" class="prev">
+        随手记
+      </a></span> <span class="next"><a href="/pages/prometheus/target_icmp.html">
+        ICMP指标
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><div></div></div></div>
+    <script src="/assets/js/app.fd839b10.js" defer></script><script src="/assets/js/2.2b9e394d.js" defer></script><script src="/assets/js/26.9dc5536c.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>k8s部署（Master节点） | 古寒飞</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <meta name="description" content="meta中的文字描述，用于SEO">
+    
+    <link rel="preload" href="/assets/css/0.styles.a17ef63e.css" as="style"><link rel="preload" href="/assets/js/app.fd839b10.js" as="script"><link rel="preload" href="/assets/js/2.2b9e394d.js" as="script"><link rel="preload" href="/assets/js/15.dbe3a329.js" as="script"><link rel="prefetch" href="/assets/js/10.fc7f5120.js"><link rel="prefetch" href="/assets/js/11.f966ca3e.js"><link rel="prefetch" href="/assets/js/12.90e838cb.js"><link rel="prefetch" href="/assets/js/13.6ae89312.js"><link rel="prefetch" href="/assets/js/14.c58c6dd4.js"><link rel="prefetch" href="/assets/js/16.0ebac1ec.js"><link rel="prefetch" href="/assets/js/17.ff4a660a.js"><link rel="prefetch" href="/assets/js/18.c17eddf4.js"><link rel="prefetch" href="/assets/js/19.c20452c9.js"><link rel="prefetch" href="/assets/js/20.96d4df4e.js"><link rel="prefetch" href="/assets/js/21.62b7f2a6.js"><link rel="prefetch" href="/assets/js/22.58603927.js"><link rel="prefetch" href="/assets/js/23.b1a61b34.js"><link rel="prefetch" href="/assets/js/24.baa79893.js"><link rel="prefetch" href="/assets/js/25.ab19d84e.js"><link rel="prefetch" href="/assets/js/26.9dc5536c.js"><link rel="prefetch" href="/assets/js/27.33b48cc0.js"><link rel="prefetch" href="/assets/js/28.3e367597.js"><link rel="prefetch" href="/assets/js/29.86454070.js"><link rel="prefetch" href="/assets/js/3.5d21b6bd.js"><link rel="prefetch" href="/assets/js/30.2d509b25.js"><link rel="prefetch" href="/assets/js/31.d279d3e7.js"><link rel="prefetch" href="/assets/js/32.6ef0b503.js"><link rel="prefetch" href="/assets/js/4.d8544a7c.js"><link rel="prefetch" href="/assets/js/5.3337d71b.js"><link rel="prefetch" href="/assets/js/6.661b1545.js"><link rel="prefetch" href="/assets/js/7.150e0099.js"><link rel="prefetch" href="/assets/js/8.6d301a46.js"><link rel="prefetch" href="/assets/js/9.2edb421e.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.a17ef63e.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.svg" alt="古寒飞" class="logo"> <span class="site-name can-hide">古寒飞</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/pages/opensource/pushgateway_client.html" class="nav-link">
+  我的开源
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="我的文章" class="dropdown-title"><span class="title">笔记</span> <span class="arrow down"></span></button> <button type="button" aria-label="我的文章" class="mobile-dropdown-title"><span class="title">笔记</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/pages/kubernetes/安装部署.html" class="nav-link">
+  Kubernetes
+</a></li><li class="dropdown-item"><!----> <a href="/pages/prometheus/target_icmp.html" class="nav-link">
+  Prometheus
+</a></li><li class="dropdown-item"><!----> <a href="/pages/theory/node_load.html" class="nav-link">
+  原理探索
+</a></li><li class="dropdown-item"><!----> <a href="/pages/install/openvpn.html" class="nav-link">
+  安装部署
+</a></li><li class="dropdown-item"><!----> <a href="/pages/taycc/pypi.html" class="nav-link">
+  杂七杂八
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术规范" class="dropdown-title"><span class="title">技术规范</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术规范" class="mobile-dropdown-title"><span class="title">技术规范</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/containernetworking/cni/blob/spec-v0.4.0/SPEC.md" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CNI-0.4.0
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="官方文档" class="dropdown-title"><span class="title">官方文献</span> <span class="arrow down"></span></button> <button type="button" aria-label="官方文档" class="mobile-dropdown-title"><span class="title">官方文献</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://www.consul.io/docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Consul
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://prometheus.io/docs/prometheus/latest/getting_started/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Prometheus
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://prometheus.io/docs/practices/pushing/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Pushgateway
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://prometheus.io/docs/alerting/latest/alertmanager/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Alertmanager
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://vuepress.vuejs.org/zh/guide/markdown.html#自定义容器" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  VuePress
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><h4>
+          Kubernetes
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://kubernetes.io/zh/docs/home/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  中文文档
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/pages/opensource/pushgateway_client.html" class="nav-link">
+  我的开源
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="我的文章" class="dropdown-title"><span class="title">笔记</span> <span class="arrow down"></span></button> <button type="button" aria-label="我的文章" class="mobile-dropdown-title"><span class="title">笔记</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/pages/kubernetes/安装部署.html" class="nav-link">
+  Kubernetes
+</a></li><li class="dropdown-item"><!----> <a href="/pages/prometheus/target_icmp.html" class="nav-link">
+  Prometheus
+</a></li><li class="dropdown-item"><!----> <a href="/pages/theory/node_load.html" class="nav-link">
+  原理探索
+</a></li><li class="dropdown-item"><!----> <a href="/pages/install/openvpn.html" class="nav-link">
+  安装部署
+</a></li><li class="dropdown-item"><!----> <a href="/pages/taycc/pypi.html" class="nav-link">
+  杂七杂八
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="技术规范" class="dropdown-title"><span class="title">技术规范</span> <span class="arrow down"></span></button> <button type="button" aria-label="技术规范" class="mobile-dropdown-title"><span class="title">技术规范</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/containernetworking/cni/blob/spec-v0.4.0/SPEC.md" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  CNI-0.4.0
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="官方文档" class="dropdown-title"><span class="title">官方文献</span> <span class="arrow down"></span></button> <button type="button" aria-label="官方文档" class="mobile-dropdown-title"><span class="title">官方文献</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://www.consul.io/docs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Consul
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://prometheus.io/docs/prometheus/latest/getting_started/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Prometheus
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://prometheus.io/docs/practices/pushing/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Pushgateway
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://prometheus.io/docs/alerting/latest/alertmanager/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Alertmanager
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://vuepress.vuejs.org/zh/guide/markdown.html#自定义容器" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  VuePress
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><h4>
+          Kubernetes
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="https://kubernetes.io/zh/docs/home/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  中文文档
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>基本知识</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/pages/kubernetes/安装部署.html" class="sidebar-link">安装部署--准备工作</a></li><li><a href="/pages/kubernetes/安装部署2.html" class="active sidebar-link">安装部署--Master节点</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/pages/kubernetes/安装部署3.html" class="sidebar-link">安装部署--Worker节点</a></li><li><a href="/pages/kubernetes/安装部署4.html" class="sidebar-link">安装部署--网络插件</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>深入理解</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/pages/kubernetes/deployment调度原理.html" class="sidebar-link">Pod创建过程</a></li><li><a href="/pages/kubernetes/ResourceQoS.html" class="sidebar-link">深入理解Resource QoS机制</a></li><li><a href="/pages/kubernetes/descheduler.html" class="sidebar-link">深入理解资源平衡与二次调度机制</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>问题记录</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/pages/kubernetes/k8s-001.html" class="sidebar-link">k8s集群中Node磁盘爆满如何处理</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="k8s部署-master节点"><a href="#k8s部署-master节点" class="header-anchor">#</a> k8s部署（Master节点）</h1> <blockquote><p>作者平时也得工作和干活~，尽量在有空的时候不断的去更新该博客...</p> <p>如果有相关问题或反馈，可以加作者微信（微信号：SPE3SRU3STAY）</p></blockquote> <h3 id="四项准备工作"><a href="#四项准备工作" class="header-anchor">#</a> 四项准备工作：</h3> <ul><li>本机Hostname解析</li> <li>网络开关设置</li> <li>关闭Swap分区</li> <li>Docker Cgroup Driver的修改</li></ul> <h3 id="本机hostname解析"><a href="#本机hostname解析" class="header-anchor">#</a> 本机Hostname解析</h3> <p>1.变更主机名（假定我们把<code>192.168.0.1</code>这台机器的主机名叫做<code>master</code>，现在修改主机名）</p> <div class="language- extra-class"><pre class="language-text"><code>hostnamectl set-hostname master
+</code></pre></div><p>2.更改/etc/hostname</p> <div class="language- extra-class"><pre class="language-text"><code>echo &quot;master&quot; &gt; /etc/hostname
+</code></pre></div><p>3.更改/etc/hosts，在localhost后面追加主机名：</p> <div class="language- extra-class"><pre class="language-text"><code>127.0.0.1 localhost.localdomain localhost master
+</code></pre></div><h3 id="进行网络设置"><a href="#进行网络设置" class="header-anchor">#</a> 进行网络设置</h3> <div class="language- extra-class"><pre class="language-text"><code>echo 1 &gt; /proc/sys/net/bridge/bridge-nf-call-iptables
+</code></pre></div><h3 id="关闭swap分区"><a href="#关闭swap分区" class="header-anchor">#</a> 关闭Swap分区</h3> <div class="language- extra-class"><pre class="language-text"><code>swapoff  -a
+sed -ri 's/.*swap.*/#&amp;/' /etc/fstab
+</code></pre></div><h3 id="修改docker基座的运行模式"><a href="#修改docker基座的运行模式" class="header-anchor">#</a> 修改Docker基座的运行模式</h3> <blockquote><p>假定您按照上一篇<code>准备工作的文章</code>中，调用我的远程脚本安装了Docker的基座服务，那么这一步您将什么都不用去做。</p></blockquote> <h3 id="生成kubernetes-master节点的初始化配置文件"><a href="#生成kubernetes-master节点的初始化配置文件" class="header-anchor">#</a> 生成Kubernetes Master节点的初始化配置文件</h3> <div class="language- extra-class"><pre class="language-text"><code>kubeadm config print init-defaults &gt; config.yaml
+</code></pre></div><h3 id="修改这个我们生成出来的config-yaml文件"><a href="#修改这个我们生成出来的config-yaml文件" class="header-anchor">#</a> 修改这个我们生成出来的config.yaml文件</h3> <p>vim ./config.yaml</p> <div class="language- extra-class"><pre class="language-text"><code>apiVersion: kubeadm.k8s.io/v1beta3
+bootstrapTokens:
+- groups:
+  - system:bootstrappers:kubeadm:default-node-token
+  token: abcdef.0123456789abcdef
+  ttl: 24h0m0s
+  usages:
+  - signing
+  - authentication
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: 192.168.0.1              #修改了这里（修改为当前节点的IP地址）
+  bindPort: 6443
+nodeRegistration:
+  criSocket: /var/run/dockershim.sock
+  imagePullPolicy: IfNotPresent
+  name: master                              #修改了这里（修改为上文中我们预先设定好的hostname）
+  taints: null
+---
+apiServer:
+  timeoutForControlPlane: 4m0s
+apiVersion: kubeadm.k8s.io/v1beta3
+certificatesDir: /etc/kubernetes/pki
+clusterName: kubernetes
+controllerManager: {}
+dns: {}
+etcd:
+  local:
+    dataDir: /var/lib/etcd
+imageRepository: registry.cn-hangzhou.aliyuncs.com/google_containers         #修改了这里（为了国内加速，不然无法直接下载到Google的对应资源）
+kind: ClusterConfiguration
+kubernetesVersion: 1.22.0
+networking:
+  dnsDomain: cluster.local
+  serviceSubnet: 10.100.0.0/16                            #修改了这里（我们认为设定的CIDR）
+scheduler: {}
+</code></pre></div><h3 id="开始拉取kubernetes所需的基础运行镜像"><a href="#开始拉取kubernetes所需的基础运行镜像" class="header-anchor">#</a> 开始拉取Kubernetes所需的基础运行镜像</h3> <div class="language- extra-class"><pre class="language-text"><code>kubeadm config images pull --config=config.yaml
+</code></pre></div><p>查看镜像是否下载好</p> <div class="language- extra-class"><pre class="language-text"><code>docker images
+
+
+
+#下载完成之后的镜像应该是这样的（数量和名称要核对清楚）：
+
+REPOSITORY                                                                    TAG       IMAGE ID       CREATED        SIZE
+registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver            v1.22.0   838d692cbe28   3 months ago   128MB
+registry.cn-hangzhou.aliyuncs.com/google_containers/kube-controller-manager   v1.22.0   5344f96781f4   3 months ago   122MB
+registry.cn-hangzhou.aliyuncs.com/google_containers/kube-proxy                v1.22.0   bbad1636b30d   3 months ago   104MB
+registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler            v1.22.0   3db3d153007f   3 months ago   52.7MB
+registry.cn-hangzhou.aliyuncs.com/google_containers/etcd                      3.5.0-0   004811815584   4 months ago   295MB
+registry.cn-hangzhou.aliyuncs.com/google_containers/coredns                   v1.8.4    8d147537fb7d   5 months ago   47.6MB
+registry.cn-hangzhou.aliyuncs.com/google_containers/pause                     3.5       ed210e3e4a5b   7 months ago   683kB
+</code></pre></div><p>如果镜像下载完成，就可以进入第三阶段了！</p> <h3 id="执行安装命令"><a href="#执行安装命令" class="header-anchor">#</a> 执行安装命令</h3> <p>到此时开始，才是真正的动手安装</p> <div class="language- extra-class"><pre class="language-text"><code>kubeadm init --config=config.yaml
+</code></pre></div><blockquote><p>如果中间出现了安装错误，或者人为搞错了操作，执行如下命令<code>可以清空所有kubeadm的操作缓存</code>，然后进行重装。命令为：<code>kubeadm reset</code></p></blockquote> <p>出现如下提示时，代表安装成功：</p> <div class="language- extra-class"><pre class="language-text"><code>[bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+[bootstrap-token] configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+[bootstrap-token] configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
+[bootstrap-token] Creating the &quot;cluster-info&quot; ConfigMap in the &quot;kube-public&quot; namespace
+[kubelet-finalize] Updating &quot;/etc/kubernetes/kubelet.conf&quot; to point to a rotatable kubelet client certificate and key
+[addons] Applied essential addon: CoreDNS
+[addons] Applied essential addon: kube-proxy
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run &quot;kubectl apply -f [podnetwork].yaml&quot; with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 192.168.0.1:6443 --token abcdef.0123456789abcdef \
+	--discovery-token-ca-cert-hash sha256:75b93879944f5e2055e97fff426a48a6fe5c0eb91de1739886fa5864d0b12bf6
+
+</code></pre></div><h3 id="为kubectl工具添加认证环境变量"><a href="#为kubectl工具添加认证环境变量" class="header-anchor">#</a> 为Kubectl工具添加认证环境变量</h3> <p>在/etc/profile中最后面追加以下内容</p> <div class="language- extra-class"><pre class="language-text"><code>export KUBECONFIG=/etc/kubernetes/admin.conf
+
+(注意) 这里就是上文安装成功时，提示我们需要添加的环境变量
+</code></pre></div><p>添加完成后，重新加载环境变量</p> <div class="language- extra-class"><pre class="language-text"><code>source /etc/profile
+</code></pre></div><p>然后测试kubectl命令</p> <div class="language- extra-class"><pre class="language-text"><code>kubectl get nodes
+
+
+（返回结果）
+NAME     STATUS     ROLES                  AGE     VERSION
+master   NotReady   control-plane,master   4m38s   v1.22.3
+</code></pre></div><p>查看master节点上运行的容器</p> <div class="language- extra-class"><pre class="language-text"><code>kubectl get pods --all-namespaces
+
+
+（返回结果）
+NAMESPACE     NAME                             READY   STATUS    RESTARTS        AGE
+kube-system   coredns-7d89d9b6b8-6m6mg         0/1     Pending   0               7m1s
+kube-system   coredns-7d89d9b6b8-fjgl7         0/1     Pending   0               7m1s
+kube-system   etcd-master                      1/1     Running   2 (5m14s ago)   7m5s
+kube-system   kube-apiserver-master            1/1     Running   1 (5m15s ago)   7m5s
+kube-system   kube-controller-manager-master   1/1     Running   2 (5m14s ago)   7m7s
+kube-system   kube-proxy-6krm9                 1/1     Running   1 (5m22s ago)   7m1s
+kube-system   kube-scheduler-master            1/1     Running   1 (5m23s ago)   7m5s
+
+</code></pre></div><blockquote><p>（到此为止，Master节点就已经安装成功了）</p></blockquote> <p><br><br><br></p><hr><br><br><br><p></p> <h4 id="帮助作者改进文档"><a href="#帮助作者改进文档" class="header-anchor">#</a> 帮助作者改进文档</h4> <p>如果您喜欢这篇文档，想让它变得更好，您可以：</p> <ul><li>推荐这篇文档，让更多的人知道。</li> <li>给作者反馈和建议：<em><em><a href="mailto:tianye3223@gmail.com">tianye3223@gmail.com</a></em></em></li></ul> <p><br><br><br><br><br></p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/pages/kubernetes/安装部署.html" class="prev">
+        安装部署--准备工作
+      </a></span> <span class="next"><a href="/pages/kubernetes/安装部署3.html">
+        安装部署--Worker节点
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><div></div></div></div>
+    <script src="/assets/js/app.fd839b10.js" defer></script><script src="/assets/js/2.2b9e394d.js" defer></script><script src="/assets/js/15.dbe3a329.js" defer></script>
+  </body>
+</html>
